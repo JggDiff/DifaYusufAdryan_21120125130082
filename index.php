@@ -3,28 +3,24 @@ require_once 'Planner.php';
 
 $planner = new Planner();
 
-// Handle POST: Tambah tugas
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'add_task') {
     $planner->addTask($_POST['task_name'] ?? '', (int)($_POST['session_count'] ?? 0));
     header('Location: ' . $_SERVER['PHP_SELF']);
     exit;
 }
 
-// Handle GET: Hapus tugas
 if (isset($_GET['delete'])) {
     $planner->removeTask((int)$_GET['delete']);
     header('Location: ' . $_SERVER['PHP_SELF']);
     exit;
 }
 
-// Handle GET: Kosongkan antrian
 if (isset($_GET['clear'])) {
     $planner->clearQueue();
     header('Location: ' . $_SERVER['PHP_SELF']);
     exit;
 }
 
-// Ambil data untuk ditampilkan
 $tasks = $planner->getTaskQueue();
 $schedule = $planner->buildSchedule();
 $totalTime = array_sum(array_column($schedule, 'duration'));
@@ -41,7 +37,6 @@ $totalTime = array_sum(array_column($schedule, 'duration'));
     <div class="container">
         <h1>🍅 Pomodoro Planner</h1>
 
-        <!-- Form Tambah Tugas -->
         <form method="POST">
             <input type="hidden" name="action" value="add_task">
             <div class="form-group">
@@ -55,14 +50,12 @@ $totalTime = array_sum(array_column($schedule, 'duration'));
             <button type="submit">Tambah ke Antrian</button>
         </form>
 
-        <!-- Aksi Antrian -->
         <div style="margin: 20px 0; text-align: center;">
             <?php if (!empty($tasks)): ?>
                 <a href="?clear" class="btn btn-clear" onclick="return confirm('Kosongkan semua tugas?')">Kosongkan Antrian</a>
             <?php endif; ?>
         </div>
 
-        <!-- Daftar Antrian -->
         <h2>Antrian Tugas</h2>
         <?php if (empty($tasks)): ?>
             <p style="text-align: center; color: #777;">Belum ada tugas dalam antrian.</p>
@@ -78,7 +71,6 @@ $totalTime = array_sum(array_column($schedule, 'duration'));
             <?php endforeach; ?>
         <?php endif; ?>
 
-        <!-- Jadwal Pomodoro -->
         <?php if (!empty($schedule)): ?>
             <h2>Jadwal Pomodoro</h2>
             <?php foreach ($schedule as $item): ?>
