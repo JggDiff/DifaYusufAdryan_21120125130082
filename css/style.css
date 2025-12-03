@@ -5,6 +5,8 @@ body {
     padding: 20px;
     display: flex;
     justify-content: center;
+    min-height: 100vh;
+    box-sizing: border-box;
 }
 
 .container {
@@ -14,22 +16,19 @@ body {
     padding: 25px;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    box-sizing: border-box;
 }
 
 h1, h2 {
     color: #e74c3c;
     text-align: center;
     margin-top: 0;
-}
-
-
-form {
-    width: 100%;
+    margin-bottom: 20px;
 }
 
 .form-group {
     margin: 15px 0;
-    text-align: left;   
+    text-align: left;
 }
 
 label {
@@ -59,10 +58,23 @@ button, .btn {
     display: inline-block;
     margin: 4px 2px;
     font-size: 16px;
+    transition: background 0.2s;
+}
+
+button:hover, .btn:hover {
+    opacity: 0.9;
 }
 
 .btn-delete { background: #e74c3c; }
 .btn-clear { background: #95a5a6; }
+.btn-restore { background: #2ecc71; }
+
+.btn-edit-confirm {
+    background: #9b59b6;
+    padding: 5px 10px;
+    font-size: 12px;
+    margin-left: 5px;
+}
 
 button[type="submit"] {
     width: 100%;
@@ -78,6 +90,37 @@ button[type="submit"] {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.queue-item.deleted {
+    background: #ffebee;
+    opacity: 0.85;
+}
+
+.queue-item.deleted > div {
+    text-decoration: line-through;
+    color: #999;
+}
+
+.queue-item .edit-form {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+}
+
+.queue-item .edit-form input[type="text"] {
+    width: 110px;
+    padding: 6px;
+    font-size: 13px;
+}
+
+.queue-item .edit-form input[type="number"] {
+    width: 60px;
+    padding: 6px;
+    font-size: 13px;
 }
 
 .schedule-item {
@@ -90,3 +133,9 @@ button[type="submit"] {
 .work { background: #e8f5e9; border-left: 4px solid #4caf50; }
 .short_break { background: #e3f2fd; border-left: 4px solid #faa30d; }
 .long_break { background: #fff8e1; border-left: 4px solid #f31414; }
+
+@media (max-width: 600px) {
+    .container { padding: 15px; }
+    .queue-item { flex-direction: column; align-items: flex-start; }
+    .queue-item .edit-form { width: 100%; }
+}

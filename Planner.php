@@ -16,16 +16,40 @@ class Planner
         if ($name !== '' && $sessions > 0) {
             $this->taskQueue[] = [
                 'name' => htmlspecialchars($name, ENT_QUOTES, 'UTF-8'),
-                'sessions' => $sessions
+                'sessions' => $sessions,
+                'deleted' => false
             ];
             $this->save();
         }
     }
 
-    public function removeTask(int $index): void
+    public function editTask(int $index, string $name, int $sessions): void
+    {
+        if (!isset($this->taskQueue[$index])) {
+            return;
+        }
+
+        $name = trim($name);
+        if ($name !== '' && $sessions > 0) {
+            $this->taskQueue[$index]['name'] = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
+            $this->taskQueue[$index]['sessions'] = $sessions;
+            $this->taskQueue[$index]['deleted'] = false;
+            $this->save();
+        }
+    }
+
+    public function softDeleteTask(int $index): void
     {
         if (isset($this->taskQueue[$index])) {
-            array_splice($this->taskQueue, $index, 1);
+            $this->taskQueue[$index]['deleted'] = true;
+            $this->save();
+        }
+    }
+
+    public function restoreTask(int $index): void
+    {
+        if (isset($this->taskQueue[$index])) {
+            $this->taskQueue[$index]['deleted'] = false;
             $this->save();
         }
     }
@@ -36,19 +60,24 @@ class Planner
         $this->save();
     }
 
-    public function getTaskQueue(): array
+    public function getTaskQueue(bool $includeDeleted = true): array
     {
-        return $this->taskQueue;
+        if ($includeDeleted) {
+            return $this->taskQueue;
+        }
+
+        return array_filter($this->taskQueue, fn($task) => !$task['deleted']);
     }
 
     public function buildSchedule(): array
     {
         $schedule = [];
-        $tasks = $this->taskQueue;
-        $totalTasks = count($tasks);
+        $activeTasks = array_filter($this->taskQueue, fn($task) => !$task['deleted']);
+        $activeTasks = array_values($activeTasks); 
+        $totalTasks = count($activeTasks);
 
         for ($ti = 0; $ti < $totalTasks; $ti++) {
-            $task = $tasks[$ti];
+            $task = $activeTasks[$ti];
             $isLastTask = ($ti === $totalTasks - 1);
 
             for ($si = 1; $si <= $task['sessions']; $si++) {
