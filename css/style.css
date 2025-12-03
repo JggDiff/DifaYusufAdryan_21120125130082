@@ -1,0 +1,92 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f9f8f4;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    max-width: 700px;
+    width: 100%;
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+h1, h2 {
+    color: #e74c3c;
+    text-align: center;
+    margin-top: 0;
+}
+
+
+form {
+    width: 100%;
+}
+
+.form-group {
+    margin: 15px 0;
+    text-align: left;   
+}
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+    color: #333;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+button, .btn {
+    padding: 10px 16px;
+    background: #3498db;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    font-size: 16px;
+}
+
+.btn-delete { background: #e74c3c; }
+.btn-clear { background: #95a5a6; }
+
+button[type="submit"] {
+    width: 100%;
+    font-weight: bold;
+    background: #2980b9;
+}
+
+.queue-item {
+    background: #e3f2fd;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.schedule-item {
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+.work { background: #e8f5e9; border-left: 4px solid #4caf50; }
+.short_break { background: #e3f2fd; border-left: 4px solid #faa30d; }
+.long_break { background: #fff8e1; border-left: 4px solid #f31414; }
